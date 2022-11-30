@@ -25,20 +25,20 @@ raquetas.push(new Raquetas(13,"Wilson","Clash 98 V2",70500,"./images/raquetas/cl
 raquetas.push(new Raquetas(14,"Wilson","Burn 100 CV",67500,"./images/raquetas/burn.jpg",1));
 raquetas.push(new Raquetas(15,"Wilson","Ultra 100 V4",67500,"./images/raquetas/wilsonultra3.jpeg",1));
 
-const Babolat= raquetas.filter((raqueta)=>raqueta.marca.includes("Babolat"));
-const Head= raquetas.filter((raqueta)=>raqueta.marca.includes("HEAD"));
-const Wilson= raquetas.filter((raqueta)=>raqueta.marca.includes("Wilson"));
+const botonesCategorias = document.querySelectorAll(".boton_categoria")
 
 const Contenedor=document.querySelector(`#contenedor_raquetas`)
 const verCarrito = document.querySelector(`#carrito`)
 const ModalContainer = document.querySelector(`#cart_container`)
 const contadorcarrito = document.querySelector("#contador")
 
-raquetas.forEach((raqueta) => {
+function agregaralapagina(categoriaseleccionada){  
+Contenedor.innerHTML="";  /* Para que no se acumulen los productos */
+categoriaseleccionada.forEach((raqueta) => {
 const div = document.createElement('div')
 div.className='tarjeta'
 div.innerHTML = `
-        <img src=${raqueta.image} class="d-block w-100">
+        <img src=${raqueta.image} class="foto d-block w-100">
         <div class="añ_cart2">
         <h6>${raqueta.marca} ${raqueta.modelo} </h6>
         <p class="prec2">Precio: $ ${raqueta.precio} + IVA</p>  
@@ -49,10 +49,27 @@ comprar.innerText="Añadir al carrito"
 comprar.classList="boton2 btn btn-success btn-outline-light"
 div.append(comprar);
 
+/* Notificacion de producto agregado */
 comprar.addEventListener("click", () => {
+    Toastify({
+        text: "Se ha agregado un nuevo elemento al carrito",
+        avatar: "../images/cart.png",
+        duration: 2500,
+        newWindow: true,
+        close: false,
+        gravity: "bottom", // `top` or `bottom`
+        position: "left", // `left`, `center` or `right`
+        stopOnFocus: false, // Prevents dismissing of toast on hover
+        style: {
+        background: "#aaaaaa",
+        color: "black"
+        },
+        onClick: function(){} // Callback after click
+    }).showToast();
 
-const repeat= ElementosCarrito.some((repeatproduct) => repeatproduct.id === raqueta.id);
-if(repeat){
+/* Agregando mas de 1 vez el mismo producto */
+const repetido= ElementosCarrito.some((repeatproduct) => repeatproduct.id === raqueta.id);
+if(repetido){
     ElementosCarrito.map((prod)=> {
         if(prod.id === raqueta.id){
             prod.cantidad++;
@@ -70,8 +87,9 @@ ElementosCarrito.push({
     saveLocal();
     }
 });
-
 });
+}
+/* Numeros en el carrito de cantidad con localStorage */
 const rendercantidadcarrito= () =>{
     let carritolength = ElementosCarrito.length;
     localStorage.setItem("carritolength", JSON.stringify(carritolength))
@@ -79,7 +97,18 @@ const rendercantidadcarrito= () =>{
 }
 rendercantidadcarrito();
 
-const wilson=document.querySelector("#Wilson")
-const head=document.querySelector("#head")
-const babolat=document.querySelector("#babolat")
-const todos= document.querySelector("#allraquets")
+/* Sistema de filtros */
+agregaralapagina(raquetas)
+
+botonesCategorias.forEach((boton) => {
+    boton.addEventListener("click",(el) => {
+        botonesCategorias.forEach(boton => boton.classList.remove("active"))
+        el.currentTarget.classList.add("active")
+        if(el.currentTarget.id != "todos"){
+        const productoselecionado=raquetas.filter((raqueta) => raqueta.marca === el.currentTarget.id)
+        agregaralapagina(productoselecionado)}
+        else{
+            agregaralapagina(raquetas)
+        }
+    })
+})

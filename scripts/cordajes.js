@@ -25,19 +25,20 @@ cordajes.push(new Cordajes(27,"Babolat","RPM Hurricane","Monofilamento",4700,"./
 cordajes.push(new Cordajes(28,"Wilson","NXT Duo II","Monofilamento",8700,"./images/cordajes/wilsonhibrido.jpg",1));
 cordajes.push(new Cordajes(29,"Wilson","NXT Power","Multifilamento",7000,"./images/cordajes/wilsonmulti.png",1));
 cordajes.push(new Cordajes(30,"Wilson","NXT 16 Comfort","Multifilamento",7000,"./images/cordajes/wilsonmult.jpeg",1));
-const Monofilamento = cordajes.filter((cordaje)=> cordaje.tipo.includes("Monofilamento"));
-const Multifilamento = cordajes.filter((cordaje)=> cordaje.tipo.includes("Multifilamento"));
-const Hibrido = cordajes.filter((cordaje)=>cordaje.tipo.includes("Hibrido"))
+
 
 const Contenedor=document.querySelector(`#contenedor`)
 const contadorcarrito = document.querySelector("#contador")
 const verCarrito = document.querySelector(`#carrito`)
 const ModalContainer = document.querySelector(`#cart_container`)
-cordajes.forEach((cordaje) => {
+
+function productoscordajes(cordajeseleccionado){
+Contenedor.innerHTML=""/* Para que no se acumulen los productos */
+cordajeseleccionado.forEach((cordaje) => {
 const div = document.createElement('div')
 div.className='tarjeta'
 div.innerHTML = `
-        <img src=${cordaje.image} class="d-block w-100">
+        <img src=${cordaje.image} class="foto d-block w-100">
         <div class="añ_cart2">
         <h6>${cordaje.marca} ${cordaje.modelo} </h6>
         <p class="prec2">Precio: ${cordaje.precio} + IVA</p>
@@ -47,10 +48,28 @@ let comprar = document.createElement("button");
 comprar.innerText="Añadir al carrito"
 comprar.classList="boton2 btn btn-success btn-outline-light"
 div.append(comprar);
-comprar.addEventListener("click", () => {
 
-    const repeat= ElementosCarrito.some((repeatproduct) => repeatproduct.id === cordaje.id);
-    if(repeat){
+/* Notificacion de producto agregado */
+comprar.addEventListener("click", () => {
+    Toastify({
+        text: "Se ha agregado un nuevo elemento al carrito",
+        avatar: "../images/cart.png",
+        duration: 2500,
+        newWindow: true,
+        close: false,
+        gravity: "bottom", // `top` or `bottom`
+        position: "left", // `left`, `center` or `right`
+        stopOnFocus: false, // Prevents dismissing of toast on hover
+        style: {
+        background: "#aaaaaa",
+        color: "black"
+        },
+        onClick: function(){} // Callback after click
+    }).showToast();
+
+    /* Agregando mas de 1 vez el mismo producto */
+    const repetido= ElementosCarrito.some((repeatproduct) => repeatproduct.id === cordaje.id);
+    if(repetido){
         ElementosCarrito.map((prod)=> {
             if(prod.id === cordaje.id){
                 prod.cantidad++;
@@ -68,11 +87,28 @@ comprar.addEventListener("click", () => {
         saveLocal();
     }
     });
-    
 })
-const rendercantidadcarrito= () =>{
+}
+/* Numeros en el carrito de cantidad con localStorage */
+const rendercantidadcarrito = () =>{
     let carritolength = ElementosCarrito.length;
     localStorage.setItem("carritolength", JSON.stringify(carritolength))
     contadorcarrito.innerHTML = JSON.parse(localStorage.getItem("carritolength"))
 }
 rendercantidadcarrito();
+
+/* Sistema de filtros */
+productoscordajes(cordajes)
+const botonesCordajes=document.querySelectorAll(".boton_categoria_cordajes")
+botonesCordajes.forEach((boton) => {
+    boton.addEventListener("click",(e) => {
+        botonesCordajes.forEach(boton => boton.classList.remove("active"))
+        e.currentTarget.classList.add("active")
+        if(e.currentTarget.id != "todas"){
+        const productoselecionado=cordajes.filter(cordaje => cordaje.tipo === e.currentTarget.id)
+        productoscordajes(productoselecionado)}
+        else{
+            productoscordajes(cordajes)
+        }
+    })
+})

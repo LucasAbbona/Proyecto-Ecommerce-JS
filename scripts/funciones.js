@@ -1,10 +1,10 @@
 const cart = () => {
-    ModalContainer.innerHTML=""
+    ModalContainer.innerHTML=""/* Para que no apareza mas de un carrito */
     ModalContainer.className="cart_container"
     const Modalhead= document.createElement("div")
     Modalhead.className="modal_header"
     Modalhead.innerHTML= `
-    <h3 class="header_title">TU CARRITO</h3>
+    <h3 class="header_title"><i class="bi bi-bag-fill"></i> TU CARRITO</h3>
     `
     ModalContainer.append(Modalhead);
     const ModalButton= document.createElement("a")
@@ -15,14 +15,13 @@ const cart = () => {
     })
     Modalhead.append(ModalButton)
     let carritoContent=document.createElement("div");
-    if(ElementosCarrito.length == 0){ 
-    
+    if(ElementosCarrito.length == 0){ /* Para cuando el carrito esta vacio */
     carritoContent.classList="modal_empty modal_content"
     carritoContent.innerHTML=`
     <p>Aun no hay elementos en el carrito</p>
     `
     ModalContainer.append(carritoContent)
-}else{
+}else{ /* Carrito con productos */
     ElementosCarrito.forEach((product)=>{
     let carritoContent=document.createElement("div");
         carritoContent.className="modal_content"
@@ -36,7 +35,7 @@ const cart = () => {
         `
         ModalContainer.append(carritoContent)
 
-        let restar=carritoContent.querySelector(".restar")
+        let restar=carritoContent.querySelector(".restar") /* Restar cantidad */
         restar.addEventListener("click", () => {
             if(product.cantidad !==1){
             product.cantidad--
@@ -44,7 +43,7 @@ const cart = () => {
             saveLocal( )
             cart()
         })
-        let sumar= carritoContent.querySelector(".sumar")
+        let sumar= carritoContent.querySelector(".sumar") /* Sumar cantidad */
         sumar.addEventListener("click", () => {
             product.cantidad++
             saveLocal()
@@ -54,7 +53,7 @@ const cart = () => {
         eliminar.innerHTML="<i class='bi bi-trash3'></i>"
         eliminar.className="delete_product"
         carritoContent.append(eliminar);
-        eliminar.addEventListener("click",eliminar_producto)
+        eliminar.addEventListener("click",eliminar_producto) /* Eliminar productos del carrito */
     })}
     const total = ElementosCarrito.reduce((acc,el) =>acc + el.precio * el.cantidad,0)
     const totalcart= document.createElement("div")
@@ -62,23 +61,23 @@ const cart = () => {
     totalcart.innerHTML= `
     <button class="btn btn-danger" id="cleancart">Vaciar Carrito</button>
     <p>Subtotal: $ ${total}</p>
-    <button id="end" class="btn btn-success">Finalizar Compra</button>
+    <button id="end" class="btn btn-success">Continuar Compra</button>
     `
     ModalContainer.append(totalcart);
     rendercantidadcarrito();
-    let vaciarcart= document.querySelector("#cleancart");
+    let vaciarcart= document.querySelector("#cleancart"); /* Vaciar el carrito */
     vaciarcart.addEventListener("click",vaciarcarrito)
-    let finalizar=document.querySelector("#end")
-    finalizar.addEventListener("click",terminarcompra )
-    rendercantidadcarrito();
+    let finalizar=document.querySelector("#end") /* Finalizar compra */
+    finalizar.addEventListener("click",terminarcompra)
     
+rendercantidadcarrito();
 } 
- 
-verCarrito.addEventListener("click", cart)
+
+verCarrito.addEventListener("click", cart) /* Mostrar carrito */
 const eliminar_producto = () =>{
-    const foundid = ElementosCarrito.find((el) => el.id);
+    const prodid = ElementosCarrito.find((prod) => prod.id);
     ElementosCarrito = ElementosCarrito.filter((cart) => {
-        return cart !== foundid;
+        return cart !== prodid;
     });
     saveLocal()
     cart()
@@ -89,7 +88,8 @@ const vaciarcarrito = () => {
     cart()
     saveLocal()
 }
-const saveLocal= () => {
+
+const saveLocal= () => { /* Guardar en el LocalStorage */
     localStorage.setItem("carrito", JSON.stringify(ElementosCarrito));    
 };
 const terminarcompra = () => {
@@ -100,9 +100,4 @@ const terminarcompra = () => {
     })
 }
 
-JSON.parse(localStorage.getItem("carrito",))
 
-
-/* TERMINAR LA COMPRA */
-/* FALTA EL FILTRO EN LAS 3 PAGINAS */
-/* ALERT CON LIBRERIA DESPUES DE AGREGAR UN PRODUCTO */

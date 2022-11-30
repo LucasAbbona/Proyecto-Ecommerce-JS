@@ -115,6 +115,7 @@ h5{
     padding: 15px;
     margin-right: 55px;
     width: 1500px;
+    height: 650px;
 }
 .tarj2 span img{
     margin-block: 20px;
@@ -175,6 +176,7 @@ h5{
     background-color: rgb(180, 180, 180);
     width: 350px;
     padding: 10px;
+    box-shadow: 5px 5px 7px grey;
 }
 .boton2{
     width: 100%;
@@ -216,7 +218,7 @@ h5{
     height: 600px;
 }
 .articles h1{
-    background-color: rgb(170, 170, 170);
+    background-color: #aaaaaa;
     width: 100%;
     height: 100px;
     text-align: center;
@@ -257,7 +259,6 @@ h5{
     position: fixed;
     width: 70%;
     background-color: beige;
-    justify-content: center;
     align-items: center;
     overflow: auto;
     z-index: 9;
@@ -265,6 +266,12 @@ h5{
     top: 12vh;
     scrollbar-color: none;
     margin: 0 15%;
+    animation-name: carrito;
+    animation-duration: 2s;
+}
+@keyframes carrito{
+    0% {max-height: 0vh;}
+    100%{max-height: 88vh;}
 }
 .cart_container::-webkit-scrollbar{
     display: none;
@@ -282,31 +289,44 @@ h5{
     background-color: rgb(192, 192, 192);
     align-items: center;
     width: 100%;
-    padding-top: 5px;
+    padding-top: 7px;
+    align-items: center;
 
 }
 .header_title{
 margin-left: 80px;
 font-size: 25px;
+margin-block: auto;
+
 }
 .modal_close{
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
     color: red;
     font-size: 18px;
+    margin-bottom: 3px;
     text-decoration: none;
+    transition: all 0.2s ease-in-out;
 }
 .modal_close:hover{
-    color: red;
+    background-color: red;
+    color: white;
     text-decoration: none;
     cursor: pointer;
 }
-.modal_content{/* 
-    background-color: beige; */
+.modal_content{
+    background-color: #b4b4b4;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding-top: 15px;
     width: 70%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     margin: 15px;
+    height: 35px;
 }
 .total_content{
 
@@ -329,19 +349,158 @@ font-size: 25px;
 }
 .delete_product{
     cursor:pointer;
-    font-size: 16px;
+    font-size: 17px;
+    margin-bottom: 13px;
 }
 .sumar{
     cursor: pointer;
     color: white;
     background-color: rgb(0, 122, 0);
-    padding: 4px;
+    padding-inline: 4px;
     border-radius: 20%;
+    margin-bottom: 12px;
 }
 .restar{
     cursor: pointer;
     color: white;
     background-color: red;
-    padding: 4px;
+    padding-inline: 4px;
     border-radius: 20%;
+    margin-bottom: 12px;
+}
+.rankings{
+    width: 100%;
+    margin-top: 30px;
+    background-color: rgb(189, 74, 39);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+.rank_player{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../images/fondos/roland-garros-2015-final-stadium.jpg);
+    width: 30%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 30px;
+    box-shadow: 0px 5px 10px black;
+    margin-block: 15px;
+}
+.rank_player div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(0.8px);
+    width: 100%;
+    border-radius: 30px;
+}
+.jugadores{
+    width: 280px;
+    height: 190px;
+    border-radius: 10px;
+    box-shadow: 3px 5px 10px black;
+    transition: all 1s linear;
+}
+.jugadores:hover{
+    transform: scale(1.08);
+}
+.rank_nombre{
+    background-color: #aaaaaa;
+    padding: 7px;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0px 3px 5px black;
+    backdrop-filter: blur(2px);
+}
+.rank_raquet{
+    background-color: #aaaaaa;
+    padding: 9px;
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 0px 3px 5px black;
+    text-decoration: none;
+    color: black;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.rank_raquet:hover{
+    color: black;
+}
+.foto{
+    transition: all 1s linear;
+}
+.foto:hover{
+    transform: scale(1.02,1.02);
+    border-radius: 10px;
+}
+.contact_back{
+    background-image: url("https://resizer.glanacion.com/resizer/1jei3sCZDpzH9Hqaya0iBKDICIY=/1200x800/smart/filters:format(webp):quality(80)/cloudfront-us-east-1.images.arcpublishing.com/lanacionar/3O43EDA5LBHUBMDVGV7LDJBONQ.JPG");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 10px 15px black;
+}
+.contact_back div{
+    background-color: rgba(128, 128, 128, 0.795);
+    height: 470px;
+    width: 350px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter:blur(2px);
+    gap: 10px;
+}
+.contact_back div label{
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.contact_back div input,
+.contact_back div textarea{
+    padding: 5px;
+    width: 80%;
+}
+.contact_back div textarea{
+    height: 100px;
+}
+.contact_back div button{
+    width: 50%;
+    padding: 5px;
+    border-radius: 12px;
+    color: white;
+    background-color: #1616c9;
+    border: 1px solid white;
+    transition: all 0.6s ease-in;
+    margin-bottom: 10px;
+}
+.contact_back div button:hover{
+    background-color: white;
+    color: #1616c9;
+}
+.alerta_form{
+    text-align: center;
+}
+.link_form{
+    color: black;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+.link_form:hover{
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    color: black;
 }
