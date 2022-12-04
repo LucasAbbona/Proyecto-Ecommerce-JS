@@ -7,13 +7,13 @@ const cart = () => {
     <h3 class="header_title"><i class="bi bi-bag-fill"></i> TU CARRITO</h3>
     `
     ModalContainer.append(Modalhead);
-    const ModalButton= document.createElement("a")
-    ModalButton.innerText="Cerrar"
-    ModalButton.className="modal_close"
-    ModalButton.addEventListener("click",() => {
+    const ModalCloseButton= document.createElement("a")
+    ModalCloseButton.innerText="Cerrar"
+    ModalCloseButton.className="modal_close"
+    ModalCloseButton.addEventListener("click",() => {
         ModalContainer.className="cerrar"
     })
-    Modalhead.append(ModalButton)
+    Modalhead.append(ModalCloseButton)
     let carritoContent=document.createElement("div");
     if(ElementosCarrito.length == 0){ /* Para cuando el carrito esta vacio */
     carritoContent.classList="modal_empty modal_content"
@@ -23,7 +23,7 @@ const cart = () => {
     ModalContainer.append(carritoContent)
 }else{ /* Carrito con productos */
     ElementosCarrito.forEach((product)=>{
-    let carritoContent=document.createElement("div");
+    const carritoContent=document.createElement("div");
         carritoContent.className="modal_content"
         carritoContent.innerHTML=`
         <p>${product.marca}</p>
@@ -35,45 +35,55 @@ const cart = () => {
         `
         ModalContainer.append(carritoContent)
 
-        let restar=carritoContent.querySelector(".restar") /* Restar cantidad */
-        restar.addEventListener("click", () => {
+        let restarCantidad=carritoContent.querySelector(".restar") /* Restar cantidad */
+        restarCantidad.addEventListener("click", () => {
             if(product.cantidad !==1){
             product.cantidad--
             }
             saveLocal( )
             cart()
         })
-        let sumar= carritoContent.querySelector(".sumar") /* Sumar cantidad */
-        sumar.addEventListener("click", () => {
+        let sumarCantidad= carritoContent.querySelector(".sumar") /* Sumar cantidad */
+        sumarCantidad.addEventListener("click", () => {
             product.cantidad++
             saveLocal()
             cart()
         })
-        let eliminar = document.createElement("span");
-        eliminar.innerHTML="<i class='bi bi-trash3'></i>"
-        eliminar.className="delete_product"
-        carritoContent.append(eliminar);
-        eliminar.addEventListener("click",eliminar_producto) /* Eliminar productos del carrito */
+        const eliminarProduct = document.createElement("span");
+        eliminarProduct.innerHTML="<i class='bi bi-trash3'></i>"
+        eliminarProduct.className="delete_product"
+        carritoContent.append(eliminarProduct);
+        eliminarProduct.addEventListener("click",eliminar_producto) /* Eliminar productos del carrito */
     })}
-    const total = ElementosCarrito.reduce((acc,el) =>acc + el.precio * el.cantidad,0)
-    const totalcart= document.createElement("div")
-    totalcart.className="total_content"
-    totalcart.innerHTML= `
-    <button class="btn btn-danger" id="cleancart">Vaciar Carrito</button>
-    <p>Subtotal: $ ${total}</p>
-    <button id="end" class="btn btn-success">Continuar Compra</button>
-    `
-    ModalContainer.append(totalcart);
-    rendercantidadcarrito();
-    let vaciarcart= document.querySelector("#cleancart"); /* Vaciar el carrito */
+    const PrecioFinal = ElementosCarrito.reduce((acc,el) =>acc + el.precio * el.cantidad,0)
+    const ModalEnd= document.createElement("div")
+    ModalEnd.className="total_content"
+    
+    if(ElementosCarrito.length>0){
+        ModalEnd.innerHTML=`
+        <button class="btn btn-danger cleancart">Vaciar Carrito</button>
+        <p>Subtotal: $ ${PrecioFinal}</p>
+        <button class="btn btn-success end">Terminar Compra</button>
+        `
+        ModalContainer.append(ModalEnd)
+    let vaciarcart= document.querySelector(".cleancart"); /* Vaciar el carrito */
     vaciarcart.addEventListener("click",vaciarcarrito)
-    let finalizar=document.querySelector("#end") /* Finalizar compra */
+    let finalizar=document.querySelector(".end") /* Finalizar compra */
     finalizar.addEventListener("click",terminarcompra)
+    }else {
+    ModalEnd.innerHTML= `
+    <p>Subtotal: $ ${PrecioFinal}</p>
+    `
+    ModalContainer.append(ModalEnd);
+    rendercantidadcarrito();
+    }
     
 rendercantidadcarrito();
-} 
+ }
 
 verCarrito.addEventListener("click", cart) /* Mostrar carrito */
+
+
 const eliminar_producto = () =>{
     const prodid = ElementosCarrito.find((prod) => prod.id);
     ElementosCarrito = ElementosCarrito.filter((cart) => {
@@ -88,7 +98,6 @@ const vaciarcarrito = () => {
     cart()
     saveLocal()
 }
-
 const saveLocal= () => { /* Guardar en el LocalStorage */
     localStorage.setItem("carrito", JSON.stringify(ElementosCarrito));    
 };
