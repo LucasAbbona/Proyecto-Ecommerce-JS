@@ -7,7 +7,7 @@ function elementosproductos(productoseleccionado){
             <img src=${prod.imagen} class="foto d-block w-100">
             <div class="añ_cart2">
             <h6>${prod.marca} ${prod.modelo} </h6>
-            <p class="prec2">Precio: ${prod.precio} + IVA</p>
+            <p class="prec2">Precio: $${prod.precio} + IVA</p>
             </div>    ` 
     Contenedor.append(div)
     let comprar = document.createElement("button");
